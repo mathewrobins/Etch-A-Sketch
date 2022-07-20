@@ -1,7 +1,21 @@
-let rows =16;
+let rows =4;
 let containerWidth = 400;
 let pixelWidth = containerWidth/rows;
 let temp;
+
+
+// Find out how many squares to make and then make them
+resolutionButton = document.querySelector("button");
+resolutionButton.addEventListener("click", resolution);
+
+function resolution (){
+    inputRows = prompt("How many pixels in a row?", 16);
+    if (inputRows>100) { inputRows=100} ;
+    if (inputRows <1) { inputRows=1};
+    removeOldPixels(rows);
+    rows = inputRows;
+    createPixels(rows);
+}
 
 
 // Create a container for the pixel divs
@@ -12,7 +26,9 @@ container.style.height = containerWidth + "px";
 
 // Creates divs called pixel that will change color when a mouse is over them
 
-for (i=0; i<rows*rows; i++){
+function createPixels(rows){
+    pixelWidth = containerWidth/rows;
+    for (i=0; i<rows*rows; i++){
     
         temp = document.createElement('div');
         temp.className = 'pixel';
@@ -23,7 +39,19 @@ for (i=0; i<rows*rows; i++){
         temp.addEventListener("mouseover", changePixel);
         container.appendChild(temp);
     
+    }
 }
+
+
+// Function to refresh pixel container by removing old divs
+function removeOldPixels(rows){
+
+    temp = document.querySelectorAll('div.pixel');
+    for (i=0; i<rows*rows; i++){
+        temp[i].remove();
+    } 
+}
+
 
 
 // Function of how the pixel will change when a mouse is over it
@@ -31,12 +59,4 @@ function changePixel(evt) {
     evt.target.style.backgroundColor = 'white';
 }
 
-
-
-/* Notes for how to create and change a div element
-
-let element = document.createElement('div');
-element.textContent = "I am a new div";
-element.style.backgroundColor = 'yellow';
-
-*/
+createPixels(rows);
